@@ -1,0 +1,174 @@
+{
+  "Uuid": "dea336dc-a5ae-4d6e-bbbf-1f5798e3a557",
+  "IsCustomNode": false,
+  "Description": null,
+  "Name": "ChangeUnitInRevit",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [
+    {
+      "Id": "4432e744f8d8495db786aa877b4e6442",
+      "Name": "Boolean",
+      "Type": "boolean",
+      "Value": "true",
+      "Description": "Selection between a true and false."
+    }
+  ],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\r\n\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\n\r\nclr.AddReference('RevitServices')\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\ndef formatUnit(Format,Unit):\r\n\tformat = FormatOptions(Format,0.00000001)\r\n\tformat.SuppressTrailingZeros=True\r\n\tunit.SetFormatOptions(Unit,format)\r\n\r\nif IN[0]:\r\n\tTransactionManager.Instance.EnsureInTransaction(doc)\r\n\tunit = doc.GetUnits()\r\n\t\r\n\tformatUnit(DisplayUnitType.DUT_MILLIMETERS,UnitType.UT_Length)\r\n\tformatUnit(DisplayUnitType.DUT_SQUARE_MILLIMETERS,UnitType.UT_Area)\r\n\tformatUnit(DisplayUnitType.DUT_CUBIC_MILLIMETERS,UnitType.UT_Volume)\r\n\tformatUnit(DisplayUnitType.DUT_DECIMAL_DEGREES,UnitType.UT_Angle)\r\n\t\r\n\tdoc.SetUnits(unit)\r\n\t\r\n\tTransactionManager.Instance.TransactionTaskDone()\r\n\tOUT = \"length unit changed to milimeter\"\r\n\t#OUT=format.SuppressTrailingZeros\r\nelse:\r\n\tOUT = \"Set IN[0] to true!\"",
+      "VariableInputPorts": true,
+      "Id": "fa212483779e4888a3136b7a50cda5be",
+      "Inputs": [
+        {
+          "Id": "eedf5ef262134478b730aa227fb032e5",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "09d44a9e6c7740afae509a8240d56a62",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.BoolSelector, CoreNodeModels",
+      "NodeType": "BooleanInputNode",
+      "InputValue": true,
+      "Id": "4432e744f8d8495db786aa877b4e6442",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "a6d9f1c2ff334a4d93b8e2633e46997e",
+          "Name": "",
+          "Description": "Boolean",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Selection between a true and false."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "21c4a48ce5444c46991c69096df1def6",
+      "Inputs": [
+        {
+          "Id": "c87c46eae9334303bfda9726a91b4f79",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "8f55cfbca0ab4ddd8227750f8c9087f5",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "09d44a9e6c7740afae509a8240d56a62",
+      "End": "c87c46eae9334303bfda9726a91b4f79",
+      "Id": "6e903842d1c144cb9e212da46fc38f99"
+    },
+    {
+      "Start": "a6d9f1c2ff334a4d93b8e2633e46997e",
+      "End": "eedf5ef262134478b730aa227fb032e5",
+      "Id": "c69a2e3beae2495ebd601ff6a071cfc2"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.3.0.5885",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "fa212483779e4888a3136b7a50cda5be",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 610.86369678421158,
+        "Y": 322.23378349109845
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Boolean",
+        "Id": "4432e744f8d8495db786aa877b4e6442",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 456.46466932889166,
+        "Y": 323.70530770183416
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Watch",
+        "Id": "21c4a48ce5444c46991c69096df1def6",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 757.047004160104,
+        "Y": 321.64414461127518
+      }
+    ],
+    "Annotations": [],
+    "X": -609.64069129824952,
+    "Y": -350.77457862408318,
+    "Zoom": 1.8886838813020521
+  }
+}
